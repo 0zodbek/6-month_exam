@@ -54,7 +54,7 @@ function Login(props) {
         if (data.access_token) {
           localStorage.setItem("userr", JSON.stringify(data));
           localStorage.setItem("token", data.access_token);
-          navigate("/home");
+          navigate("/");
         }
       })
       .catch((err) => {
