@@ -8,7 +8,7 @@ import Register from './pages/RegisterPage/Regiser.jsx'
 function App() {
   const [count, setCount] = useState(0)
   const [isAuth, setIsAuth] = useState(false);
-  let token = JSON.parse(JSON.stringify("token"))
+  const [token, setToken] = useState(localStorage.getItem('token'));
   useEffect(
     function(){
     if(token){
@@ -26,15 +26,14 @@ function App() {
     <Routes>
       <Route path='/' element={<Login></Login>}></Route>
       <Route path='/register' element={<Register></Register>}></Route>
-      {/* <Route path='/home' element={<Home></Home>}></Route> */}
-      isAuth && 
-        (
+      isAuth && {" "}
+        
           <>
           {console.log("salom1")}
             <Route path='/home' element={<Home></Home>}></Route>
             {console.log("salom2")}
           </>
-        )
+        
 
       <Route path='*' element={<Error></Error>}></Route>
     </Routes>

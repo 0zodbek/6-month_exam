@@ -14,7 +14,7 @@ function Home() {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       setUserPhoto(user);
-    }
+    }    
     const storedInfoLC = JSON.parse(localStorage.getItem("infoLC")) || [];
     setInfoLC(storedInfoLC);
   }, []);
@@ -59,7 +59,6 @@ function Home() {
     setInfoLC(updatedInfoLC);
     localStorage.setItem("infoLC", JSON.stringify(updatedInfoLC));
   };
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.box}>
@@ -87,11 +86,6 @@ function Home() {
           {open && (
             <FocusTrap
               open
-              // sx={{
-              //   position: "absolute",
-              //   left: "0px",
-              //   top: "50%",
-              // }}
             >
               <Box
                 className={styles.box}

@@ -55,8 +55,6 @@ function Login(props) {
           localStorage.setItem("userr", JSON.stringify(data));
           localStorage.setItem("token", data.access_token);
           navigate("/home");
-        }else if(data.message == 'Unauthorized'){
-        navigate('/home')
         }
       })
       .catch((err) => {
