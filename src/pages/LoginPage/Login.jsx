@@ -2,77 +2,67 @@ import React from "react";
 import styles from "./login.module.css";
 import hero from "../../../public/hero.png";
 import loginImg from "../../../public/logoLogin.svg";
-import Input from "../../components/Input/input.jsx";
 import Switch from "@mui/joy/Switch";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import google from "../../../public/Google.svg";
 function Login(props) {
-  const navigate = useNavigate("");
-  const usernameRef = useRef("");
+  const navigate = useNavigate();
+  const emailRef = useRef("");
   const passwordRef = useRef("");
-  function validate(username, password) {
-    if (username.current.value < 3) {
-      alert("username is not valid !");
-      username.current.style.outlineColor = "red";
-      username.current.focus();
+  function handleToRegister(event) {
+    navigate("/register");
+  }
+  function validate(email, password) {
+    console.log(email.current.value);
+    if (!email.current.value) {
+      alert("Email is required");
       return false;
     }
-    if (password.current.value < 3) {
-      alert("password is not valid !");
-      password.current.focus();
-      password.current.style.outlineColor = "red";
+    if (!password.current.value) {
+      alert("Password is required");
+      return false;
+    }
+    if (password.current.value.length < 3) {
+      alert("Password must be at least 3 characters long");
       return false;
     }
     return true;
   }
   function handleSubmit(event) {
     event.preventDefault();
-    const isvalid = validate(usernameRef, passwordRef);
-    if (!isvalid) {
+    const isValid = validate(emailRef, passwordRef);
+    if (!isValid) {
       return;
     }
-    navigate("/");
-    const user = {
-      username: usernameRef.current.value,
+    const userr = {
+      email: emailRef.current.value,
       password: passwordRef.current.value,
     };
-    console.log(user);
-    fetch("https://auth-rg69.onrender.com/api/auth/signin", {
+    console.log(userr);
+    fetch("https://api.escuelajs.co/api/v1/auth/login", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(user),
+      body: JSON.stringify(userr),
     })
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
-        if (data.message == "User Not found.") {
-          alert("Foydalanuvchi nomi hato kiritdingiz !");
-          usernameRef.current.focus();
-        }
-        if (data.message == "Invalid Password!") {
-          alert("parolni hato kiritdingiz !");
-          passwordRef.current.focus();
-        }
-        if (data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(data));
-          localStorage.setItem("token", data.accessToken);
-          navigate("/");
+
+        if (data.access_token) {
+          localStorage.setItem("userr", JSON.stringify(data));
+          localStorage.setItem("token", data.access_token);
+          navigate("/home");
+        }else if(data.message == 'Unauthorized'){
+        navigate('/home')
         }
       })
       .catch((err) => {
         console.log(err);
       });
   }
-  function handleToRegister(event) {
-    navigate("/register");
-  }
-  function login(event) {
-    alert("salom");
-  }
-  function Google() {}
 
   return (
     <div className={styles.wrapper}>
@@ -86,20 +76,30 @@ function Login(props) {
         </div>
         <form className={styles.form}>
           <h2>Nice to see you again</h2>
-          <Input
-            type="text"
-            ref={usernameRef}
-            id="name"
-            place="Email or phone number"
-            label="Login"
-          />
-          <Input
-            type="password"
-            ref={passwordRef}
-            id="password"
-            place="Enter password"
-            label="Password"
-          ></Input>
+          <div>
+            <label className={styles.label} htmlFor="email">
+              Login
+            </label>
+            <input
+              ref={emailRef}
+              type="email"
+              className={styles.input}
+              id="email"
+              placeholder="Enter email"
+            />
+          </div>
+          <div>
+            <label className={styles.label} htmlFor="password">
+              Password
+            </label>
+            <input
+              ref={passwordRef}
+              type="password"
+              className={styles.input}
+              id="password"
+              placeholder="Enter password"
+            />
+          </div>
           <div className={styles.frame}>
             <Switch size="lg" /> <p>Remember me</p>
             <span className={styles.navigate}>Forgot password?</span>
@@ -108,7 +108,7 @@ function Login(props) {
             Sign in
           </button>
           <hr />
-          <button className={styles.btnGoogle} onClick={Google}>
+          <button className={styles.btnGoogle}>
             {" "}
             <img src={google} alt="" />
             Or sign in with Google
