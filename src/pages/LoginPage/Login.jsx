@@ -37,7 +37,7 @@ function Login(props) {
     }
     const userr = {
       email: emailRef.current.value,
-      password: passwordRef.current.value,
+      password: passwordRef.current.value
     };
     console.log(userr);
     fetch("https://api.escuelajs.co/api/v1/auth/login", {
@@ -51,7 +51,7 @@ function Login(props) {
       .then((data) => {
         console.log(data);
 
-        if (data.access_token) {
+        if (data.message) {
           localStorage.setItem("userr", JSON.stringify(data));
           localStorage.setItem("token", data.access_token);
           navigate("/");

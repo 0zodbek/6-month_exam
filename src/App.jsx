@@ -12,7 +12,7 @@ function App() {
   const navigate = useNavigate();
   let token = JSON.parse(localStorage.getItem("token"));
   useEffect(() => {
-    if (token) {
+    if (token.value) {
       setIsAuth(true);
     } else {
       setIsAuth(false);
